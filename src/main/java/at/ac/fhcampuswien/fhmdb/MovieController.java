@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
@@ -51,8 +52,11 @@ public class MovieController implements Initializable {
     }
 
     public void initializeState() {
+
+        List<Movie> result = new ArrayList<>();
+
         //from API
-        List<Movie> result = MovieAPI.getAllMovies();
+        result = getMoviesFromApi(null, null, null, null);
 
         //in observable list
         setMovieObservableList(result);
@@ -105,7 +109,7 @@ public class MovieController implements Initializable {
         }
 
         //from API
-        List<Movie> movies = getMovies(searchQuery, genre, releaseYear, ratingFrom);
+        List<Movie> movies = getMoviesFromApi(searchQuery, genre, releaseYear, ratingFrom);
 
         //to observable list
         setMovieObservableList(movies);
@@ -131,8 +135,16 @@ public class MovieController implements Initializable {
         observableMovies.addAll(movies);
     }
 
-    private List<Movie> getMovies(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
-        return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+    private List<Movie> getMoviesFromApi(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
+
+        try {
+            return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+        }
+        catch (MovieApiException e)
+        {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     private void sortMovies(){
