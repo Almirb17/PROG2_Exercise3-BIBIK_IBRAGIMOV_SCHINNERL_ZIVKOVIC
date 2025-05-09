@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +25,7 @@ public class HomeController {
     @FXML
     private JFXHamburger hamburgerNav;
 
-    private boolean isMenuCollapsed = true;
+    private boolean isNavCollapsed = true;
 
     private HamburgerBasicCloseTransition transition;
 
@@ -54,16 +53,15 @@ public class HomeController {
 
     public void toggleMenuDrawer() {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.3), drawer);
-        if (isMenuCollapsed) {
+        if (isNavCollapsed) {
             transition.setByX(130);
             drawer.toFront();
         } else {
             transition.setByX(-130);
-            // Nach Animation im Hintergrund
             transition.setOnFinished(e -> drawer.toBack());
         }
         transition.play();
-        isMenuCollapsed = !isMenuCollapsed;
+        isNavCollapsed = !isNavCollapsed;
     }
 
     public void setContent(String fxmlPath) {
@@ -76,8 +74,7 @@ public class HomeController {
             e.printStackTrace();
         }
 
-        // Optional: Menü zuklappen nach Navigation
-        if (!isMenuCollapsed) {
+        if (!isNavCollapsed) {
             toggleMenuDrawer();
         }
     }
