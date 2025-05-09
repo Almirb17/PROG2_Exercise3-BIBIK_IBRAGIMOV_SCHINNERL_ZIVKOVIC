@@ -1,7 +1,12 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @DatabaseTable(tableName = "movie")
 public class MovieEntity {
@@ -47,5 +52,49 @@ public class MovieEntity {
         this.imgUrl = imgUrl;
         this.lengthInMinutes = lengthInMinutes;
         this.rating = rating;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public long getApild() {
+        return apild;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getGenres() {
+        return genres;
+    }
+
+    public List<Genre> getGenresListFromString() {
+        return Arrays.stream(genres.split(", "))
+                .map(String::toUpperCase)
+                .map(Genre::valueOf)
+                .collect(Collectors.toList());
+    }
+
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public int getLengthInMinutes() {
+        return lengthInMinutes;
+    }
+
+    public double getRating() {
+        return rating;
     }
 }
