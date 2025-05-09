@@ -5,23 +5,23 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "watchlist")
 public class WatchlistMovieEntity {
-    //no duplicates for primary key
-    @DatabaseField(canBeNull = false)
-    private long id;
 
-    @DatabaseField(canBeNull = false)
+    @DatabaseField(id = true)
     private String apiId;
 
     public WatchlistMovieEntity() {}
 
-    public WatchlistMovieEntity(long id, String apiId) {
-        this.id = id;
+    public WatchlistMovieEntity(String apiId) {
         this.apiId = apiId;
     }
 
     @Override
     public String toString()
     {
-        return "{id: " + id + ", apiId: " + apiId + "}";
+        return "{apiId: " + apiId + "}";
+    }
+
+    public String getApiId() {
+        return apiId;
     }
 }

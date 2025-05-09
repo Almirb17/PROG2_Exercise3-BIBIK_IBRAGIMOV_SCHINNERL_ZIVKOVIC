@@ -2,8 +2,10 @@ package at.ac.fhcampuswien.fhmdb.repos;
 
 import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.ui.WatchlistCell;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieRepository {
-    static Dao<MovieEntity, Long> dao;
+    static Dao<MovieEntity, String> dao;
 
     public MovieRepository() throws DatabaseException {
         this.dao = DatabaseManager.getInstance().getMovieDao();
@@ -32,6 +34,21 @@ public class MovieRepository {
         for (MovieEntity movieEntity : movieEntities) {
             movies.add(EntityToMovie(movieEntity));
         }
+        return movies;
+    }
+
+    public List<Movie> getWatchlistBasedMovies(List<WatchlistMovieEntity> wtlml) throws DatabaseException {
+
+        List<Movie> movies = new ArrayList<>();
+        for(WatchlistMovieEntity movieEntity : wtlml)
+        {
+            try {
+                movies.add(EntityToMovie(dao.queryForId( movieEntity.getApiId())));
+            } catch (SQLException | DatabaseException e) {
+                throw new DatabaseException("Fehler beim Ermitteln der Movies für die Watchlist", e);
+            }
+        }
+
         return movies;
     }
 

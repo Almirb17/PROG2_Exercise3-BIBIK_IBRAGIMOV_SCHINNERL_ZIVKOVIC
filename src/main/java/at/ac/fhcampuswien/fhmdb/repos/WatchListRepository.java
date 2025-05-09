@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class WatchListRepository {
-    static Dao<WatchlistMovieEntity, Long> dao;
+    static Dao<WatchlistMovieEntity, String> dao;
 
     public WatchListRepository() throws DatabaseException {
         this.dao = DatabaseManager.getInstance().getWatchListDao();

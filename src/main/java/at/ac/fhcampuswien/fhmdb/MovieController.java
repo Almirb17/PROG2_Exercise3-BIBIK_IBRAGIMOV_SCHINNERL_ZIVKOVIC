@@ -1,10 +1,14 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.exceptions.MovieApiException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
+import at.ac.fhcampuswien.fhmdb.repos.MovieRepository;
+import at.ac.fhcampuswien.fhmdb.repos.WatchListRepository;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -42,29 +46,19 @@ public class MovieController implements Initializable {
     public JFXButton sortBtn;
 
     protected ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
-
     protected SortedState sortedState = SortedState.NONE;
+    private WatchListRepository g_wtchlst_repo;
+    private MovieRepository g_movie_repo;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeState();
+        fillObservableMovieList(null, null, null, null);
         initializeLayout();
-    }
-
-    public void initializeState() {
-
-        List<Movie> result = new ArrayList<>();
-
-        //from API
-        result = getMoviesFromApi(null, null, null, null);
-
-        //in observable list
-        setMovieObservableList(result);
     }
 
     public void initializeLayout() {
         movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // apply custom cells to the listview
+        movieListView.setCellFactory(movieListView -> new MovieCell(onAddToWatchlistClicked)); // apply custom cells to the listview
 
         // genre combobox
         Object[] genres = Genre.values();   // get all genres
@@ -93,8 +87,6 @@ public class MovieController implements Initializable {
         ratingFromComboBox.setPromptText("Filter by Rating");
     }
 
-
-
     @FXML
     private void searchBtnClicked(ActionEvent actionEvent) {
 
@@ -109,10 +101,7 @@ public class MovieController implements Initializable {
         }
 
         //from API
-        List<Movie> movies = getMoviesFromApi(searchQuery, genre, releaseYear, ratingFrom);
-
-        //to observable list
-        setMovieObservableList(movies);
+        fillObservableMovieList(searchQuery, genre, releaseYear, ratingFrom);
 
         //sort observable list
         sortMovies(sortedState);
@@ -135,16 +124,55 @@ public class MovieController implements Initializable {
         observableMovies.addAll(movies);
     }
 
-    private List<Movie> getMoviesFromApi(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
+    public void fillObservableMovieList(String searchQuery, Genre genre, String releaseYear, String ratingFrom) {
+        List<Movie> result = new ArrayList<>();
+        boolean api_success = false;
 
+        //init repos
         try {
-            return MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);
+            g_wtchlst_repo = new WatchListRepository();
         }
-        catch (MovieApiException e)
+        catch(DatabaseException e) {
+            //TODO Ausgabe am Bildschirm
+        }
+        try {
+            g_movie_repo = new MovieRepository();
+        }
+        catch(DatabaseException e) {
+            //TODO Ausgabe am Bildschirm
+        }
+
+        //Data from API
+        try {
+            result = MovieAPI.getAllMovies(searchQuery, genre, releaseYear, ratingFrom);;
+            api_success = true;
+        }
+        catch (MovieApiException apiException) {
+            //TODO Ausgabe am Bildschirm
+            try {
+                result = g_movie_repo.getAllMovies();
+            }catch (DatabaseException databaseException)
+            {
+                //TODO Ausgabe am Bildschirm
+            }
+        }
+
+        if(api_success)
         {
-            System.out.println(e.getMessage());
-            return null;
+            try {
+                //delete movies database
+                g_movie_repo.clearMovies();
+
+                //insert API ones
+                g_movie_repo.addAllMovies(result);
+            }
+            catch (DatabaseException databaseException)
+            {
+                //TODO Ausgabe am Bildschirm
+            }
         }
+        //in observable list
+        setMovieObservableList(result);
     }
 
     private void sortMovies(){
@@ -164,4 +192,15 @@ public class MovieController implements Initializable {
             sortedState = SortedState.DESCENDING;
         }
     }
+
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) ->
+    {
+        Movie movie = (Movie) clickedItem;
+        try {
+            g_wtchlst_repo.addToWatchlist(new WatchlistMovieEntity(movie.getId()));
+        }
+        catch (DatabaseException e) {
+            //TODO Ausgabe am Bildschirm
+        }
+    };
 }
