@@ -26,7 +26,11 @@ public class MovieRepository {
         return movies;
     }
 
-    public void removeAll() throws SQLException {
+    public void deleteMovie(Movie movie) throws SQLException {
+        dao.delete(movieToEntity(movie));
+    }
+
+    public void clearMovies() throws SQLException {
         dao.deleteBuilder().delete();
     }
 

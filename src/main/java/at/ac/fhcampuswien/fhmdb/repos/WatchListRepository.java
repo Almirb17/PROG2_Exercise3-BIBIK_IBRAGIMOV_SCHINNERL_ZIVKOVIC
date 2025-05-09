@@ -17,15 +17,23 @@ public class WatchListRepository {
         this.dao = DatabaseManager.getInstance().getWatchListDao();
     }
 
-    public void addToWatchlist(WatchlistMovieEntity wme) throws SQLException {
-        dao.create(wme);
+    public List<WatchlistMovieEntity> getWatchlist() throws SQLException {
+        return dao.queryForAll();
     }
 
     public void removeFromWatchlist(WatchlistMovieEntity wme) throws SQLException {
         dao.delete(wme);
     }
 
-    public List<WatchlistMovieEntity> getWatchlist() throws SQLException {
-        return dao.queryForAll();
+    public void clearWatchlist() throws SQLException {
+        dao.deleteBuilder().delete();
     }
+
+    public void addToWatchlist(WatchlistMovieEntity wme) throws SQLException {
+        dao.create(wme);
+    }
+
+
+
+
 }

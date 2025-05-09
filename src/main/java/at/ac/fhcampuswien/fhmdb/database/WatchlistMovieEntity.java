@@ -12,8 +12,7 @@ public class WatchlistMovieEntity {
     @DatabaseField(canBeNull = false)
     private String apiId;
 
-    public WatchlistMovieEntity() {
-    }
+    public WatchlistMovieEntity() {}
 
     public WatchlistMovieEntity(long id, String apiId) {
         this.id = id;
