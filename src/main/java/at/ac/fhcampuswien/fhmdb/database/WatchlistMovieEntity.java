@@ -22,6 +22,6 @@ public class WatchlistMovieEntity {
     @Override
     public String toString()
     {
-        return "id: " + id + ", apiId: " + apiId;
+        return "{id: " + id + ", apiId: " + apiId + "}";
     }
 }
