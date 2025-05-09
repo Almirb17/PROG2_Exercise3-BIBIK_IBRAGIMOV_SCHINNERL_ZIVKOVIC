@@ -17,8 +17,8 @@ public class DatabaseManager {
     private static ConnectionSource connectionSource;
     private static DatabaseManager instance;
 
-    private static Dao<MovieEntity, Long> movieDao;
-    private static Dao<WatchlistMovieEntity, Long> watchListDao;
+    private static Dao<MovieEntity, String> movieDao;
+    private static Dao<WatchlistMovieEntity, String> watchListDao;
 
     //private --> can not use "new" for instance
     private DatabaseManager() throws DatabaseException {
@@ -36,12 +36,12 @@ public class DatabaseManager {
         return instance;
     }
 
-    public Dao<MovieEntity, Long> getMovieDao()
+    public Dao<MovieEntity, String> getMovieDao()
     {
         return movieDao;
     }
 
-    public Dao<WatchlistMovieEntity, Long> getWatchListDao()
+    public Dao<WatchlistMovieEntity, String> getWatchListDao()
     {
         return watchListDao;
     }

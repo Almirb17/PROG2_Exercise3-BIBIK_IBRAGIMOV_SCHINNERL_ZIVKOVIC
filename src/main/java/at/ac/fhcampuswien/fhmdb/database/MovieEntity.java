@@ -11,12 +11,8 @@ import java.util.stream.Collectors;
 @DatabaseTable(tableName = "movie")
 public class MovieEntity {
 
-    //no duplicates for primary key
-    @DatabaseField(generatedId = true)
-    private long id;
-
     //column name = attribute name (per default)
-    @DatabaseField()
+    @DatabaseField(id = true)
     private String apiId;
 
     @DatabaseField()
