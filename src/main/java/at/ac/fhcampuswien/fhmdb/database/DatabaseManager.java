@@ -41,7 +41,7 @@ public class DatabaseManager {
 
     //private methods
     private static void createTables() throws SQLException {
-        TableUtils.createTable(connectionSource, MovieEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
     }
 
     private static void createConnectionSource() throws SQLException {
