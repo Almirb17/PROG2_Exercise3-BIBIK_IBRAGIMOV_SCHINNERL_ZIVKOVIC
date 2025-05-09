@@ -180,10 +180,6 @@ public class HomeController implements Initializable {
 
     public void searchBtnClicked(ActionEvent actionEvent) {
 
-        //EXAMPLE CALL DATABASE
-
-        DatabaseManager.getInstance().
-
         String searchQuery = searchField.getText().trim().toLowerCase();
         String releaseYear = validateComboboxValue(releaseYearComboBox.getSelectionModel().getSelectedItem());
         String ratingFrom = validateComboboxValue(ratingFromComboBox.getSelectionModel().getSelectedItem());

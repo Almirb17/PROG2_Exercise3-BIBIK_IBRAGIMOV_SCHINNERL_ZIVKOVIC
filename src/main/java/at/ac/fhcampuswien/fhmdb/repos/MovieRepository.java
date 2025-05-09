@@ -45,7 +45,7 @@ public class MovieRepository {
         );
     }
 
-    private MovieEntity EntityToMovie(Movie movie) throws SQLException
+    private MovieEntity EntityToMovie(Movie movie, long apild) throws SQLException
     {
         return new MovieEntity(
                 apild,
