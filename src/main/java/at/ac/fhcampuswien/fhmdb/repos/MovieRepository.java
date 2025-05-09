@@ -16,16 +16,6 @@ public class MovieRepository {
         this.dao = DatabaseManager.getInstance().getMovieDao();
     }
 
-    public void addToMovies(Movie movie, long apild) throws SQLException
-    {
-        dao.create(movieToEntity(movie, apild));
-    }
-
-    public void removeFromMovies(Movie movie, long apild) throws SQLException
-    {
-        dao.delete(movieToEntity(movie, apild));
-    }
-
     public List<Movie> getAllMovies() throws SQLException {
         List<MovieEntity> movieEntities = dao.queryForAll();
         List<Movie> movies = new ArrayList<>();
@@ -36,12 +26,22 @@ public class MovieRepository {
         return movies;
     }
 
+    public void removeAll() throws SQLException {
+        dao.deleteBuilder().delete();
+    }
+
+    public void addAllMovies(List<Movie> movies) throws SQLException {
+        for(Movie movie : movies)
+        {
+            dao.create(movieToEntity(movie));
+        }
+    }
 
 
-    private MovieEntity movieToEntity(Movie movie, long apild) throws SQLException
-    {
+    //private
+    private MovieEntity movieToEntity(Movie movie) throws SQLException {
         return new MovieEntity(
-                apild,
+                movie.getId(),
                 movie.getTitle(),
                 movie.getDescription(),
                 movie.getGenresAsString(),
@@ -52,10 +52,9 @@ public class MovieRepository {
         );
     }
 
-    private Movie EntityToMovie(MovieEntity movieEntity) throws SQLException
-    {
+    private Movie EntityToMovie(MovieEntity movieEntity) throws SQLException {
         return new Movie(
-                movieEntity.getId(),
+                movieEntity.getApiId(),
                 movieEntity.getTitle(),
                 movieEntity.getDescription(),
                 movieEntity.getGenresListFromString(),

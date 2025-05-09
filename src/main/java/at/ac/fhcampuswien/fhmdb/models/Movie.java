@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Movie {
-    private final long id;
+    private final String id;
     private final String title;
     private final String description;
     private final List<Genre> genres;
@@ -24,7 +24,7 @@ public class Movie {
         return this.title;
     }
 
-    public Movie(long id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -49,7 +49,7 @@ public class Movie {
         return this.title.equals(other.title) && this.description.equals(other.description) && this.genres.equals(other.genres);
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
