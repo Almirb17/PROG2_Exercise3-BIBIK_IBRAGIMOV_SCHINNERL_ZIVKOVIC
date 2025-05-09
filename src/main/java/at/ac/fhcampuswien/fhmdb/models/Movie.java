@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Movie {
-    private final String id;
+    private final long id;
     private final String title;
     private final String description;
     private final List<Genre> genres;
@@ -24,22 +24,8 @@ public class Movie {
         return this.title;
     }
 
-    public Movie(String title, String description, List<Genre> genres) {
-        this.id = UUID.randomUUID().toString();
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-        this.releaseYear = 0;
-        this.imgUrl = "";
-        this.lengthInMinutes = 0;
-        this.rating = 0;
-    }
-    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        if(id == null) {
-            this.id = UUID.randomUUID().toString();
-        } else {
-            this.id = id;
-        }
+    public Movie(long id, String title, String description, List<Genre> genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.genres = genres;
@@ -61,6 +47,10 @@ public class Movie {
             return false;
         }
         return this.title.equals(other.title) && this.description.equals(other.description) && this.genres.equals(other.genres);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getTitle() {
