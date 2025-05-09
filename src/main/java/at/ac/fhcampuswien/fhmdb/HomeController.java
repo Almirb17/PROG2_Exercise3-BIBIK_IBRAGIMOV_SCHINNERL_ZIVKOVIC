@@ -76,6 +76,7 @@ public class HomeController {
 
         if (!isNavCollapsed) {
             toggleMenuDrawer();
+            toggleHamburgerTransitionState();
         }
     }
 
