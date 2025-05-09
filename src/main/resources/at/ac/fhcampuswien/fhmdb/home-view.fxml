@@ -34,6 +34,7 @@
          <JFXHamburger fx:id="hamburgerNav" alignment="TOP_RIGHT" stylesheets="styles.css" />
       </children>
    </HBox>
+
    <StackPane VBox.vgrow="ALWAYS">
       <children>
          <BorderPane fx:id="mainPane" />
@@ -41,8 +42,8 @@
             <sidePane>
                <VBox>
                   <children>
-                     <JFXButton fx:id="homeBtn" onAction="#navigateToMovieList" prefHeight="25.0" prefWidth="130.0" text="Home" />
-                     <JFXButton fx:id="watchlistBtn" onAction="#navigateToWatchList" prefWidth="130.0" text="WatchList" />
+                     <JFXButton fx:id="homeBtn" onAction="#navigateToMovielist" prefHeight="25.0" prefWidth="130.0" text="Home" />
+                     <JFXButton fx:id="watchlistBtn" onAction="#navigateToWatchlist" prefWidth="130.0" text="WatchList" />
                      <JFXButton fx:id="aboutBtn" prefWidth="130.0" text="About"/>
                   </children>
                </VBox>
