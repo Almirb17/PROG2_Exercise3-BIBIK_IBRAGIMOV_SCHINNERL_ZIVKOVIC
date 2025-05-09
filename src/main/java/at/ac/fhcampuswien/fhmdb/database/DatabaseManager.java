@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
-import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -15,17 +14,23 @@ public class DatabaseManager {
     public static final String DB_PASSWORD = "1234";
 
     private static ConnectionSource connectionSource;
-    private static Dao<MovieEntity, Long> dao;
     private static DatabaseManager instance;
+
+    private static Dao<MovieEntity, Long> movieDao;
+    private static Dao<WatchlistMovieEntity, Long> watchListDao;
 
     //private --> can not use "new" for instance
     private DatabaseManager() throws SQLException {
         createConnectionSource();
-        dao = DaoManager.createDao(connectionSource, MovieEntity.class);
+
+        //gen daos
+        movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
+        watchListDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
+
         createTables();
     }
 
-    //for creation / getter
+    //getter
     public static DatabaseManager getInstance() throws SQLException {
         if(instance == null){
             instance = new DatabaseManager();
@@ -34,14 +39,20 @@ public class DatabaseManager {
         return instance;
     }
 
-    public Dao<MovieEntity, Long> getDao()
+    public Dao<MovieEntity, Long> getMovieDao()
     {
-        return dao;
+        return movieDao;
+    }
+
+    public Dao<WatchlistMovieEntity, Long> getWatchListDao()
+    {
+        return watchListDao;
     }
 
     //private methods
     private static void createTables() throws SQLException {
         TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
+        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
     }
 
     private static void createConnectionSource() throws SQLException {

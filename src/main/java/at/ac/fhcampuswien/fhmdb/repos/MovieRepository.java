@@ -2,31 +2,18 @@ package at.ac.fhcampuswien.fhmdb.repos;
 
 import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MovieRepository {
     static Dao<MovieEntity, Long> dao;
 
     public MovieRepository() throws SQLException {
-        this.dao = DatabaseManager.getInstance().getDao();
-    }
-
-    public void addToMovies(Movie movie, long apild) throws SQLException
-    {
-        dao.create(movieToEntity(movie, apild));
-    }
-
-    public void removeFromMovies(Movie movie, long apild) throws SQLException
-    {
-        dao.delete(movieToEntity(movie, apild));
+        this.dao = DatabaseManager.getInstance().getMovieDao();
     }
 
     public List<Movie> getAllMovies() throws SQLException {
@@ -39,12 +26,22 @@ public class MovieRepository {
         return movies;
     }
 
+    public void removeAll() throws SQLException {
+        dao.deleteBuilder().delete();
+    }
+
+    public void addAllMovies(List<Movie> movies) throws SQLException {
+        for(Movie movie : movies)
+        {
+            dao.create(movieToEntity(movie));
+        }
+    }
 
 
-    private MovieEntity movieToEntity(Movie movie, long apild) throws SQLException
-    {
+    //private
+    private MovieEntity movieToEntity(Movie movie) throws SQLException {
         return new MovieEntity(
-                apild,
+                movie.getId(),
                 movie.getTitle(),
                 movie.getDescription(),
                 movie.getGenresAsString(),
@@ -55,10 +52,9 @@ public class MovieRepository {
         );
     }
 
-    private Movie EntityToMovie(MovieEntity movieEntity) throws SQLException
-    {
+    private Movie EntityToMovie(MovieEntity movieEntity) throws SQLException {
         return new Movie(
-                movieEntity.getId(),
+                movieEntity.getApiId(),
                 movieEntity.getTitle(),
                 movieEntity.getDescription(),
                 movieEntity.getGenresListFromString(),

@@ -17,7 +17,7 @@ public class MovieEntity {
 
     //column name = attribute name (per default)
     @DatabaseField()
-    private long apild;
+    private String apiId;
 
     @DatabaseField()
     private String title;
@@ -43,8 +43,8 @@ public class MovieEntity {
 
     public MovieEntity() {}
 
-    public MovieEntity(long apild, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
-        this.apild = apild;
+    public MovieEntity(String apiId, String title, String description, String genres, int releaseYear, String imgUrl, int lengthInMinutes, double rating) {
+        this.apiId = apiId;
         this.title = title;
         this.description = description;
         this.genres = genres;
@@ -54,12 +54,8 @@ public class MovieEntity {
         this.rating = rating;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public long getApild() {
-        return apild;
+    public String getApiId() {
+        return apiId;
     }
 
     public String getTitle() {
