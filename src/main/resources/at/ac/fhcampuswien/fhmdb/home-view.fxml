@@ -31,9 +31,10 @@
          </Label>
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
          <Region HBox.hgrow="ALWAYS"/>
-         <JFXHamburger fx:id="hamburgerNav" alignment="TOP_RIGHT" stylesheets="styles.css" />
+         <JFXHamburger fx:id="hamburgerNav" alignment="TOP_RIGHT" stylesheets="styles.css"/>
       </children>
    </HBox>
+
 
    <StackPane VBox.vgrow="ALWAYS">
       <children>
