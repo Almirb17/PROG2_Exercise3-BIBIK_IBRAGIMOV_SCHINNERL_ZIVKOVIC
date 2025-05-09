@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -20,18 +21,14 @@ public class DatabaseManager {
     private static Dao<WatchlistMovieEntity, Long> watchListDao;
 
     //private --> can not use "new" for instance
-    private DatabaseManager() throws SQLException {
+    private DatabaseManager() throws DatabaseException {
         createConnectionSource();
-
-        //gen daos
-        movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
-        watchListDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
-
+        createDaos();
         createTables();
     }
 
     //getter
-    public static DatabaseManager getInstance() throws SQLException {
+    public static DatabaseManager getInstance() throws DatabaseException {
         if(instance == null){
             instance = new DatabaseManager();
         }
@@ -50,12 +47,44 @@ public class DatabaseManager {
     }
 
     //private methods
-    private static void createTables() throws SQLException {
-        TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
-        TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
+    private static void createDaos() throws DatabaseException
+    {
+        try {
+            movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fehler beim Erstellen des Dao der Movie - Tabelle", e);
+        }
+
+        try {
+            watchListDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("Fehler beim Erstellen des Dao der Watchlist - Tablle - Tabelle", e);
+        }
+
+
     }
 
-    private static void createConnectionSource() throws SQLException {
-        connectionSource = new JdbcConnectionSource(DB_URL, DB_USER, DB_PASSWORD);
+    private static void createTables() throws DatabaseException {
+        try {
+            TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
+        } catch (SQLException e) {
+            throw new DatabaseException("Fehler beim Erstellen der Movie - Tabelle", e);
+        }
+
+        try {
+            TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
+        } catch (SQLException e) {
+            throw new DatabaseException("Fehler beim Erstellen der Watchlist - Tabelle", e);
+        }
+    }
+
+    private static void createConnectionSource() throws DatabaseException {
+        try {
+            connectionSource = new JdbcConnectionSource(DB_URL, DB_USER, DB_PASSWORD);
+        }catch (SQLException e) {
+            throw new DatabaseException("Fehler beim Anlegen der ConnectionSource", e);
+        }
     }
 }

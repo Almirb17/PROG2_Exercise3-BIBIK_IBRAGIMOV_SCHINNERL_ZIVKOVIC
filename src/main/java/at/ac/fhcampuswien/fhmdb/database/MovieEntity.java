@@ -93,4 +93,19 @@ public class MovieEntity {
     public double getRating() {
         return rating;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "apiId='" + apiId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", genres='" + genres + '\'' +
+                ", releaseYear=" + releaseYear +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", lengthInMinutes=" + lengthInMinutes +
+                ", rating=" + rating +
+                '}';
+    }
+
 }
