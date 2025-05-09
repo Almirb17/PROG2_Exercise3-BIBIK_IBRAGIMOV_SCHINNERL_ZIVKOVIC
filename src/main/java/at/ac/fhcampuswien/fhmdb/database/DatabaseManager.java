@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
-import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -15,17 +14,22 @@ public class DatabaseManager {
     public static final String DB_PASSWORD = "1234";
 
     private static ConnectionSource connectionSource;
-    private static Dao<MovieEntity, Long> dao;
     private static DatabaseManager instance;
+
+    private static Dao<MovieEntity, Long> movieDao;
+
 
     //private --> can not use "new" for instance
     private DatabaseManager() throws SQLException {
         createConnectionSource();
-        dao = DaoManager.createDao(connectionSource, MovieEntity.class);
+
+        movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);
+
+
         createTables();
     }
 
-    //for creation / getter
+    //getter
     public static DatabaseManager getInstance() throws SQLException {
         if(instance == null){
             instance = new DatabaseManager();
@@ -33,10 +37,9 @@ public class DatabaseManager {
 
         return instance;
     }
-
-    public Dao<MovieEntity, Long> getDao()
+    public Dao<MovieEntity, Long> getMovieDao()
     {
-        return dao;
+        return movieDao;
     }
 
     //private methods

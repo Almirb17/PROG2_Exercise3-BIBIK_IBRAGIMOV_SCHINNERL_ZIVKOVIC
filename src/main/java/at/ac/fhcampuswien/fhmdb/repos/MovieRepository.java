@@ -2,21 +2,18 @@ package at.ac.fhcampuswien.fhmdb.repos;
 
 import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MovieRepository {
     static Dao<MovieEntity, Long> dao;
 
     public MovieRepository() throws SQLException {
-        this.dao = DatabaseManager.getInstance().getDao();
+        this.dao = DatabaseManager.getInstance().getMovieDao();
     }
 
     public void addToMovies(Movie movie, long apild) throws SQLException
