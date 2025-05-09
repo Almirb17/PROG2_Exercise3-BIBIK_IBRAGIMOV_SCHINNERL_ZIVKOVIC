@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -17,13 +18,16 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genre = new Label();
     private final JFXButton detailBtn = new JFXButton("Show Details");
-    private final VBox layout = new VBox(title, detail, genre, detailBtn);
+    private final JFXButton watchlistBtn = new JFXButton("To Watchlist");
+    private final VBox layout = new VBox(title, detail, genre);
+    private final HBox buttonBox = new HBox(detailBtn, watchlistBtn);
     private boolean collapsedDetails = true;
 
     public MovieCell() {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
+        watchlistBtn.setStyle("-fx-background-color: #f5c518;");
         title.getStyleClass().add("text-yellow");
         detail.getStyleClass().add("text-white");
         genre.getStyleClass().add("text-white");
@@ -31,11 +35,15 @@ public class MovieCell extends ListCell<Movie> {
         layout.setBackground(new Background(new BackgroundFill(Color.web("#454545"), null, null)));
 
         // layout
+        buttonBox.setSpacing(10);
+        buttonBox.setPadding(new Insets(5, 0, 0, 0));
+        layout.getChildren().add(buttonBox);
         title.fontProperty().set(title.getFont().font(20));
         detail.setWrapText(true);
         layout.setPadding(new Insets(10));
         layout.spacingProperty().set(10);
         layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+
 
         detailBtn.setOnMouseClicked(mouseEvent -> {
             if (collapsedDetails) {
