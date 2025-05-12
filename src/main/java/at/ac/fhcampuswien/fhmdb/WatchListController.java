@@ -40,13 +40,13 @@ public class WatchListController implements Initializable  {
             g_wtchlst_repo = new WatchListRepository();
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Fehler beim Initialisieren der Watchlist Datenbank aufgetreten:\n" + e.getMessage());
         }
         try {
             g_movie_repo = new MovieRepository();
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Fehler beim Initialisieren der Movie Datenbank aufgetreten:\n" + e.getMessage());
         }
 
         //laden der watchlist daten
@@ -54,7 +54,7 @@ public class WatchListController implements Initializable  {
             observableWatchlistElements.addAll(g_movie_repo.getWatchlistBasedMovies(g_wtchlst_repo.getWatchlist()));
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Fehler beim Laden der Filme aus der Watchlist:\n" + e.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class WatchListController implements Initializable  {
             observableWatchlistElements.remove(movie);
         }
         catch (DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Fehler beim Entfernen des Films aus der Watchlist:\n" + e.getMessage());
         }
 
     };
