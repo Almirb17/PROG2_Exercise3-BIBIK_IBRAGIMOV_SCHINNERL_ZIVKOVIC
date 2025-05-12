@@ -9,6 +9,7 @@ import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.SortedState;
 import at.ac.fhcampuswien.fhmdb.repos.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.repos.WatchListRepository;
+import at.ac.fhcampuswien.fhmdb.ui.AlertHandler;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -133,13 +134,15 @@ public class MovieController implements Initializable {
             g_wtchlst_repo = new WatchListRepository();
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Watchlist Datenbank konnte nicht initialisiert werden: \n" + e.getMessage());
+
         }
         try {
             g_movie_repo = new MovieRepository();
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Movielist Datenbank konnte nicht initialisiert werden: \n" + e.getMessage());
+
         }
 
         //Data from API
@@ -148,12 +151,13 @@ public class MovieController implements Initializable {
             api_success = true;
         }
         catch (MovieApiException apiException) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Movies konnten nicht aus der API geladen werden: \n" +apiException.getMessage());
+
             try {
                 result = g_movie_repo.getAllMovies();
             }catch (DatabaseException databaseException)
             {
-                //TODO Ausgabe am Bildschirm
+                AlertHandler.throwAlert("Movies konnten nicht aus der Datenbank geladen werden: \n" +databaseException.getMessage());
             }
         }
 
@@ -168,7 +172,7 @@ public class MovieController implements Initializable {
             }
             catch (DatabaseException databaseException)
             {
-                //TODO Ausgabe am Bildschirm
+                AlertHandler.throwAlert("Movies können nicht aus der API in die Datenbank hinzugefügt werden: \n" + databaseException.getMessage());
             }
         }
         //in observable list
@@ -200,7 +204,7 @@ public class MovieController implements Initializable {
             g_wtchlst_repo.addToWatchlist(new WatchlistMovieEntity(movie.getId()));
         }
         catch (DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert("Movie konnte nicht hinzugefügt werden:\n " + e.getMessage());
         }
     };
 }
