@@ -5,6 +5,7 @@ import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.repos.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.repos.WatchListRepository;
+import at.ac.fhcampuswien.fhmdb.ui.AlertHandler;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import at.ac.fhcampuswien.fhmdb.ui.WatchlistCell;
 import com.jfoenix.controls.JFXListView;
@@ -12,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,7 +40,7 @@ public class WatchListController implements Initializable  {
             g_wtchlst_repo = new WatchListRepository();
         }
         catch(DatabaseException e) {
-            //TODO Ausgabe am Bildschirm
+            AlertHandler.throwAlert(e);
         }
         try {
             g_movie_repo = new MovieRepository();
@@ -73,5 +75,6 @@ public class WatchListController implements Initializable  {
         }
 
     };
+
 
 }
