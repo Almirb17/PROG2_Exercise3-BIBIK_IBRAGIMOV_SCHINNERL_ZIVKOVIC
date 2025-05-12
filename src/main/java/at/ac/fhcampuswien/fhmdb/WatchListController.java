@@ -40,7 +40,7 @@ public class WatchListController implements Initializable  {
             g_wtchlst_repo = new WatchListRepository();
         }
         catch(DatabaseException e) {
-            AlertHandler.throwAlert(e);
+            //TODO Ausgabe am Bildschirm
         }
         try {
             g_movie_repo = new MovieRepository();

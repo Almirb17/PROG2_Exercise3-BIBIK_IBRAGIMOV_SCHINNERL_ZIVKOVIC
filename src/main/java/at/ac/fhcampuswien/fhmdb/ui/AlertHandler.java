@@ -5,10 +5,10 @@ import javafx.scene.control.Alert;
 
 public class AlertHandler {
 
-    public static void throwAlert(DatabaseException e){
+    public static void throwAlert(String message){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Exception");
-        alert.setContentText(e.getMessage());
+        alert.setContentText(message);
         alert.setHeaderText("Your Exception Message");
         alert.showAndWait();
 
